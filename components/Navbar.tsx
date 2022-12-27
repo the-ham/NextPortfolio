@@ -5,7 +5,7 @@ const Navbar = () => {
   return (
     <div className="navbar bg-base-100">
       <div className="flex-1 px-2 lg:flex-none">
-        <Link href="/"><a className="text-lg font-bold">Ambery Harris</a></Link>
+        <Link href="/" className="text-lg font-bold">Ambery Harris</Link>
       </div>
       <div className="flex justify-end flex-1 px-2">
         <div className="flex items-stretch">
