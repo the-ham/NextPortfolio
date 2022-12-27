@@ -6,7 +6,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="flex flex-col h-screen justify-between">
       <Navbar />
-      {children}
+      <div className="h-full relative">{children}</div>
       <Footer />
     </div>
   );
