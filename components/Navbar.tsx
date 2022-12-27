@@ -18,7 +18,7 @@ const Navbar = () => {
               className="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52 mt-4"
             >
               <li>
-                <a>TicTacToe</a>
+                <Link href="/tictactoe">TicTacToe</Link>
               </li>
               <li>
                 <a>File storage</a>
