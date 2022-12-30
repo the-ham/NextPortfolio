@@ -21,7 +21,13 @@ const Navbar = () => {
                 <Link href="/tictactoe">TicTacToe</Link>
               </li>
               <li>
+                <Link href="/todo">Todo&apos;s</Link>
+              </li>
+              <li>
                 <a>File storage</a>
+              </li>
+              <li>
+                <Link href="/palette">Palette</Link>
               </li>
             </ul>
           </div>
