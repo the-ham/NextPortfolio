@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import type { NextPage } from "next";
 import TodoForm from "../components/ToDo/TodoForm";
 import TodoList from "../components/ToDo/TodoList";
@@ -14,10 +14,28 @@ const Todo: NextPage = () => {
   const [filter, setFilter] = useState("All");
   const [filteredList, setFilteredList] = useState([]);
 
+  // useRef creates an object: {current: _value_},
+  // which persists between renders and whose updating itself does not cause a re-render.
+  // We use this feature to create a variable "initialRender", that tracks whether it is
+  // the first time the page has been loaded up.
+  const initialRender = useRef(true);
+
+  // calls getLocalTodos upon initial load
+  useEffect(() => {
+    getLocalTodos();
+  }, []);
+
   // This useEffect basically runs handleFilteredList every time either 'todos' or 'filter' are updated
   useEffect(() => {
     handleFilteredList();
-  }, [todos, filter])
+    // if this is the initial rendering of the page, useEffect is exited early and initialRender is set to false.
+    if (initialRender.current) {
+      initialRender.current = false;
+      return;
+    }
+    // Otherwise, todos are saved to localStorage.
+    saveLocalTodos();
+  }, [todos, filter]);
 
   // This function basically creates a filtered list of todos based on their completed-ness,
   // and that filtered list is passed as the filteredList prop to the todoList component, which renders it
@@ -32,6 +50,21 @@ const Todo: NextPage = () => {
       default:
         setFilteredList(todos);
         break;
+    }
+  };
+
+  // saves current state of todos into localStorage
+  const saveLocalTodos = () => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  };
+
+  // If localStorage is empty, initialize "todos"(the localStorage variable not the state) to [], otherwise set state of todos using it
+  const getLocalTodos = () => {
+    if (localStorage.getItem("todos") === null) {
+      localStorage.setItem("todos", JSON.stringify([]));
+    } else {
+      let todosLocal = JSON.parse(localStorage.getItem("todos") || '{}');
+      setTodos(todosLocal);
     }
   };
 
