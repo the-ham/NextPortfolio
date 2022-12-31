@@ -11,7 +11,7 @@ const TodoForm = ({ todos, setTodos, inputText, setInputText }: any) => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    setTodos([...todos, { text: inputText, completed: false }]);
+    setTodos([...todos, { id: Math.random() * 10000, text: inputText, completed: false }]);
     setInputText("");
   };
 

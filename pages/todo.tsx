@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import type { NextPage } from "next";
 import TodoForm from "../components/ToDo/TodoForm";
+import TodoList from "../components/ToDo/TodoList";
 
 const Todo: NextPage = () => {
   {
@@ -13,15 +14,21 @@ const Todo: NextPage = () => {
 
   return (
     <>
-      <div className="container mx-auto flex justify-center">
+      <div className="container mx-auto mt-12 flex justify-center">
         {/* Here we pass in a prop we will call "setInputText" (can be called anything),
           the content of this prop will be the setInputText function, which we will
           then be able to access from whatever component the prop is passed to, in this case
           it will be the TodoForm component */}
-        <TodoForm todos={todos} setTodos={setTodos} inputText={inputText} setInputText={setInputText} />
+        <TodoForm
+          todos={todos}
+          setTodos={setTodos}
+          inputText={inputText}
+          setInputText={setInputText}
+        />
       </div>
-      <br />
-      <div className="container mx-auto flex justify-center">{inputText}</div>
+      <div className="container mx-auto mt-8 flex flex-column justify-center">
+        <TodoList todos={todos} setTodos={setTodos} />
+      </div>
     </>
   );
 };
