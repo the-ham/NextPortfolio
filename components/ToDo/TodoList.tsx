@@ -1,11 +1,11 @@
 import React from 'react'
 import Todo from './Todo'
 
-const TodoList = ({todos, setTodos}: any) => {
+const TodoList = ({todos, setTodos, filteredList}: any) => {
 
   return (
     <div>
-      {todos.map((todo: any) => (
+      {filteredList.map((todo: any) => (
         // We need to pass the props of each todo into the corresponding todo component:
         // id -> for selecting the correct todo for checking or deletion
         // completed -> so that we can flip the completed status in the check handler

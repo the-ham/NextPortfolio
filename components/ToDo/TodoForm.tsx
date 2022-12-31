@@ -1,6 +1,13 @@
 import React from "react";
 
-const TodoForm = ({ todos, setTodos, inputText, setInputText }: any) => {
+const TodoForm = ({
+  todos,
+  setTodos,
+  inputText,
+  setInputText,
+  setFilter,
+  filter
+}: any) => {
   // instead of passing in "props", we shortcut by destructuring it and only passing in the "setInputText" prop
 
   // stuff in here is executed every time handleInput is called
@@ -18,6 +25,10 @@ const TodoForm = ({ todos, setTodos, inputText, setInputText }: any) => {
       ]);
       setInputText("");
     }
+  };
+
+  const handleFilter = (e: any) => {
+    setFilter(e.target.value);
   };
 
   return (
@@ -40,6 +51,14 @@ const TodoForm = ({ todos, setTodos, inputText, setInputText }: any) => {
           </button>
         </div>
       </form>
+      <select
+        onChange={handleFilter}
+        className="select select-ghost max-w-xs ml-2"
+      >
+        <option value="All">All</option>
+        <option value="Completed">Completed</option>
+        <option value="Uncompleted">Uncompleted</option>
+      </select>
     </>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import type { NextPage } from "next";
 import TodoForm from "../components/ToDo/TodoForm";
 import TodoList from "../components/ToDo/TodoList";
@@ -11,6 +11,29 @@ const Todo: NextPage = () => {
   }
   const [inputText, setInputText] = useState("");
   const [todos, setTodos] = useState([]);
+  const [filter, setFilter] = useState("All");
+  const [filteredList, setFilteredList] = useState([]);
+
+  // This useEffect basically runs handleFilteredList every time either 'todos' or 'filter' are updated
+  useEffect(() => {
+    handleFilteredList();
+  }, [todos, filter])
+
+  // This function basically creates a filtered list of todos based on their completed-ness,
+  // and that filtered list is passed as the filteredList prop to the todoList component, which renders it
+  const handleFilteredList = () => {
+    switch (filter) {
+      case "Completed":
+        setFilteredList(todos.filter((todo: any) => todo.completed === true));
+        break;
+      case "Uncompleted":
+        setFilteredList(todos.filter((todo: any) => todo.completed === false));
+        break;
+      default:
+        setFilteredList(todos);
+        break;
+    }
+  };
 
   return (
     <>
@@ -24,10 +47,15 @@ const Todo: NextPage = () => {
           setTodos={setTodos}
           inputText={inputText}
           setInputText={setInputText}
+          setFilter={setFilter}
         />
       </div>
       <div className="container mx-auto mt-8 flex flex-column justify-center">
-        <TodoList todos={todos} setTodos={setTodos} />
+        <TodoList
+          todos={todos}
+          setTodos={setTodos}
+          filteredList={filteredList}
+        />
       </div>
     </>
   );
