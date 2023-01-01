@@ -1,13 +1,21 @@
 import React from "react";
+import { Todo } from "../../pages/todo";
 
-const Todo = ({ text, todo, todos, setTodos }: any) => {
+export interface TodoProps {
+  key: number;
+  todo: Todo;
+  todos: Todo[];
+  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
+}
+
+const TodoItem = ({ todo, todos, setTodos }: TodoProps) => {
   const handleCheck = () => {
     setTodos(
       todos.map((e: any) => {
         if (e.id === todo.id) {
           return { ...e, completed: !e.completed };
         }
-        return {...e}
+        return { ...e };
       })
     );
   };
@@ -19,9 +27,14 @@ const Todo = ({ text, todo, todos, setTodos }: any) => {
   return (
     <>
       <div className="alert shadow-lg mb-4 max-w-7xl">
-        <span className="max-w-5xl overflow-x-hidden">{text}</span>
+        <span className="max-w-5xl overflow-x-hidden">{todo.text}</span>
         <div className="flex-none">
-          <button onClick={handleCheck} className={`btn btn-sm ${todo.completed ? "btn-ghost" : "btn-primary"}`}>
+          <button
+            onClick={handleCheck}
+            className={`btn btn-sm ${
+              todo.completed ? "btn-ghost" : "btn-primary"
+            }`}
+          >
             Check
           </button>
           <button onClick={handleDelete} className="btn btn-sm btn-secondary">
@@ -33,4 +46,4 @@ const Todo = ({ text, todo, todos, setTodos }: any) => {
   );
 };
 
-export default Todo;
+export default TodoItem;

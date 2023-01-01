@@ -3,30 +3,67 @@ import type { NextPage } from "next";
 import TodoForm from "../components/ToDo/TodoForm";
 import TodoList from "../components/ToDo/TodoList";
 
+export interface Todo {
+  id: number;
+  text: string;
+  completed: boolean;
+}
+
+export enum Filters {
+  "All" = "All",
+  "Completed" = "Completed",
+  "Uncompleted" = "Uncompleted"
+}
+
+export type Filter = "All" | "Completed" | "Uncompleted"
+
 const Todo: NextPage = () => {
   {
     /* A new "state" is initialized here, namely, that storing the information
       about the input text inside of the form component (although we can access it
       anywhere in the app). */
   }
-  const [inputText, setInputText] = useState("");
-  const [todos, setTodos] = useState([]);
-  const [filter, setFilter] = useState("All");
-  const [filteredList, setFilteredList] = useState([]);
+  const [inputText, setInputText] = useState<string>("");
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [filter, setFilter] = useState<Filter>(Filters.All);
+  const [filteredList, setFilteredList] = useState<Todo[]>([]);
 
   // useRef creates an object: {current: _value_},
   // which persists between renders and whose updating itself does not cause a re-render.
   // We use this feature to create a variable "initialRender", that tracks whether it is
   // the first time the page has been loaded up.
-  const initialRender = useRef(true);
+  const initialRender = useRef<boolean>(true);
 
   // calls getLocalTodos upon initial load
-  useEffect(() => {
+  useEffect((): void => {
     getLocalTodos();
   }, []);
 
   // This useEffect basically runs handleFilteredList every time either 'todos' or 'filter' are updated
   useEffect(() => {
+    // This function basically creates a filtered list of todos based on their completed-ness,
+    // and that filtered list is passed as the filteredList prop to the todoList component, which renders it
+    const handleFilteredList = (): void => {
+      switch (filter) {
+        case "Completed":
+          setFilteredList(todos.filter((todo: Todo) => todo.completed === true));
+          break;
+        case "Uncompleted":
+          setFilteredList(
+            todos.filter((todo: Todo) => todo.completed === false)
+          );
+          break;
+        default:
+          setFilteredList(todos);
+          break;
+      }
+    };
+
+    // saves current state of todos into localStorage
+    const saveLocalTodos = () => {
+      localStorage.setItem("todos", JSON.stringify(todos));
+    };
+
     handleFilteredList();
 
     // if this is the initial rendering of the page, useEffect is exited early and initialRender is set to false.
@@ -39,33 +76,12 @@ const Todo: NextPage = () => {
     saveLocalTodos();
   }, [todos, filter]);
 
-  // This function basically creates a filtered list of todos based on their completed-ness,
-  // and that filtered list is passed as the filteredList prop to the todoList component, which renders it
-  const handleFilteredList = () => {
-    switch (filter) {
-      case "Completed":
-        setFilteredList(todos.filter((todo: any) => todo.completed === true));
-        break;
-      case "Uncompleted":
-        setFilteredList(todos.filter((todo: any) => todo.completed === false));
-        break;
-      default:
-        setFilteredList(todos);
-        break;
-    }
-  };
-
-  // saves current state of todos into localStorage
-  const saveLocalTodos = () => {
-    localStorage.setItem("todos", JSON.stringify(todos));
-  };
-
   // If localStorage is empty, initialize "todos"(the localStorage variable not the state) to [], otherwise set state of todos using it
-  const getLocalTodos = () => {
+  const getLocalTodos = (): void => {
     if (localStorage.getItem("todos") === null) {
       localStorage.setItem("todos", JSON.stringify([]));
     } else {
-      let todosLocal = JSON.parse(localStorage.getItem("todos") || '{}');
+      let todosLocal = JSON.parse(localStorage.getItem("todos") || "{}");
       setTodos(todosLocal);
     }
   };
