@@ -1,4 +1,15 @@
-import React from "react";
+import React, { BaseSyntheticEvent, SyntheticEvent } from "react";
+import { Todo } from "../../pages/todo";
+import { Filter } from "../../pages/todo";
+import { Filters } from "../../pages/todo";
+
+export interface TodoFormProps {
+  todos: Todo[];
+  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
+  inputText: string;
+  setInputText: React.Dispatch<React.SetStateAction<string>>;
+  setFilter: React.Dispatch<React.SetStateAction<Filter>>;
+}
 
 const TodoForm = ({
   todos,
@@ -6,17 +17,16 @@ const TodoForm = ({
   inputText,
   setInputText,
   setFilter,
-  filter
-}: any) => {
+}: TodoFormProps) => {
   // instead of passing in "props", we shortcut by destructuring it and only passing in the "setInputText" prop
 
   // stuff in here is executed every time handleInput is called
-  const handleInput = (e: any) => {
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.value);
     setInputText(e.target.value); // sets the state of inputText to the value inside of the text box
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (inputText != "") {
       setTodos([
@@ -27,7 +37,8 @@ const TodoForm = ({
     }
   };
 
-  const handleFilter = (e: any) => {
+  const handleFilter = (e: BaseSyntheticEvent) => {
+    console.log(e);
     setFilter(e.target.value);
   };
 
@@ -44,7 +55,7 @@ const TodoForm = ({
           />
           <button
             onClick={handleSubmit}
-            className="btn btn-accent ml-2"
+            className="btn btn-outline border-2 btn-ghost ml-2"
             type="submit"
           >
             Submit
@@ -53,11 +64,11 @@ const TodoForm = ({
       </form>
       <select
         onChange={handleFilter}
-        className="select select-ghost max-w-xs ml-2"
+        className="select select-ghost max-w-xs ml-3"
       >
-        <option value="All">All</option>
-        <option value="Completed">Completed</option>
-        <option value="Uncompleted">Uncompleted</option>
+        <option value={Filters.All}>{Filters.All}</option>
+        <option value={Filters.Completed}>{Filters.Completed}</option>
+        <option value={Filters.Uncompleted}>{Filters.Uncompleted}</option>
       </select>
     </>
   );
