@@ -28,11 +28,13 @@ const Todo: NextPage = () => {
   // This useEffect basically runs handleFilteredList every time either 'todos' or 'filter' are updated
   useEffect(() => {
     handleFilteredList();
+
     // if this is the initial rendering of the page, useEffect is exited early and initialRender is set to false.
     if (initialRender.current) {
       initialRender.current = false;
-      return;
+      return; // exits the useEffect early, a.k.a. todos is not saved to localStorage
     }
+
     // Otherwise, todos are saved to localStorage.
     saveLocalTodos();
   }, [todos, filter]);

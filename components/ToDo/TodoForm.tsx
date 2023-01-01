@@ -44,7 +44,7 @@ const TodoForm = ({
           />
           <button
             onClick={handleSubmit}
-            className="btn btn-accent ml-2"
+            className="btn btn-outline border-2 btn-ghost ml-2"
             type="submit"
           >
             Submit
@@ -53,7 +53,7 @@ const TodoForm = ({
       </form>
       <select
         onChange={handleFilter}
-        className="select select-ghost max-w-xs ml-2"
+        className="select select-ghost max-w-xs ml-3"
       >
         <option value="All">All</option>
         <option value="Completed">Completed</option>
